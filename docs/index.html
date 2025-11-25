@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Emoji Sentiment Lexicon</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1>A Filipino Emoji Sentiment Lexicon</h1>
+        <p>
+          We are 4th year students in De La Salle University researching Natural Language Processing (NLP) specifically how Filipino social media shapes the sentiment of emojis. 
+          <br/><br/>
+          Feel free to explore the data and use it for your own research.
+        </p>
+        <div class="cta-row">
+          <a class="button primary" href="data/emoji_summary.json">Download data</a>
+          <a class="button" href="https://github.com/bryce/EmojiLexicon" target="_blank" rel="noreferrer"
+            >View source</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="ranking">
+        <div class="section-heading">
+          <div>
+            <h2>Emoji Sentiment Ranking</h2>
+            <p>Sort, search, and explore sentiment metrics for each emoji.</p>
+          </div>
+          <label class="search">
+            <span>Search emoji or name</span>
+            <input id="table-search" type="text" placeholder="e.g. 😂 or heart" />
+          </label>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="emoji-table">
+            <thead>
+              <tr>
+                <th data-sort="rank">#</th>
+                <th data-sort="emoji">Emoji</th>
+                <th data-sort="sentiment_score">Sentiment</th>
+                <th data-sort="count">Occurrences</th>
+                <th data-sort="pos_ratio">Positive</th>
+                <th data-sort="neu_ratio">Neutral</th>
+                <th data-sort="neg_ratio">Negative</th>
+                <th data-sort="confidence_interval">CI ±</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="boxplot">
+        <div class="section-heading">
+          <div>
+            <h2>Emoji Sentiment Boxplot</h2>
+            <p>Distribution of crowd-labeled sentiment scores (1=very negative, 7=very positive).</p>
+          </div>
+        </div>
+        <div id="boxplot-chart" class="chart"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          © 2025 De La Salle University — CeLT Lab · Data last updated
+          <span id="build-date">—</span>
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.plot.ly/plotly-2.31.1.min.js" defer></script>
+    <script src="main.js" type="module" defer></script>
+  </body>
+</html>
+
