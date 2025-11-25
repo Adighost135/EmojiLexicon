@@ -5,7 +5,7 @@ All visualizations and data assets are located in the `docs/` folder and are ser
 
 ## About
 
-This site was created as part of my thesis research while affiliated with the **Computational Linguistics Laboratory (CeLT)** at **De La Salle University (DLSU)**.
+This site was created as part of my thesis research while affiliated with the **Center for Language Technologies (CeLT)** at **De La Salle University (DLSU)**.
 
 The dataset used to develop the lexicon and visualizations was collected from **Twitter**.
 
