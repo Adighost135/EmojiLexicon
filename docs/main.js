@@ -118,10 +118,14 @@ function renderBoxplot() {
     orientation: "h",
     x: expandedData.map((row) => row.score),
     y: expandedData.map((row) => row.emoji),
-    marker: { color: "rgba(72, 104, 255, 0.45)" },
+    marker: { color: "rgba(72, 104, 255, 0.35)" },
     line: { color: "rgba(72, 104, 255, 0.9)" },
     hovertemplate: "%{y}: score %{x}<extra></extra>",
-    boxpoints: false,
+    boxpoints: "outliers",
+    jitter: 0,
+    whiskerwidth: 0.4,
+    quartilemethod: "inclusive",
+    meanline: { visible: true, width: 2, color: "rgba(72, 104, 255, 1)" },
   };
 
   const layout = {
