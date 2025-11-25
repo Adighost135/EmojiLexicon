@@ -126,6 +126,7 @@ function renderBoxplot() {
     whiskerwidth: 0.4,
     quartilemethod: "inclusive",
     meanline: { visible: true, width: 2, color: "rgba(72, 104, 255, 1)" },
+    boxmean: true,
   };
 
   const layout = {
