@@ -108,57 +108,82 @@ function renderTable() {
 }
 
 function renderBoxplot() {
-  const categoryOrder = summaryData
-    .slice()
-    .sort((a, b) => b.count - a.count)
-    .map((row) => row.emoji);
 
-  const trace = {
-    type: "box",
+  fetch(SUMMARY_URL)
+  .then(response => response.json())
+  .then(emojiData => {
+
+    const colors = [
+    "#d73027",
+    "#f46d43",
+    "#ffa500",
+    "#ffff65",
+    "#a6d96a",
+    "#66bd63",
+    "#1a9850"
+  ];
+
+  const categories = ["1","2","3","4","5","6","7"];
+  const categoryNames = ["very negative","negative","somewhat negative","neutral","somewhat positive","positive","very positive"];
+
+
+  const traces = categories.map((cat, i) => ({
+    y: emojiData.map(d => d.emoji),
+    x: emojiData.map(d => d.counts[cat] || 0),
+    customdata: emojiData.map(d => d.counts[cat] || 0),
+    name: ` ${categoryNames[i]} (${cat})`,
+    type: "bar",
     orientation: "h",
-    x: expandedData.map((row) => row.score),
-    y: expandedData.map((row) => row.emoji),
-    marker: { color: "rgba(72, 104, 255, 0.35)" },
-    line: { color: "rgba(72, 104, 255, 0.9)" },
-    hovertemplate: "%{y}: score %{x}<extra></extra>",
-    boxpoints: "outliers",
-    jitter: 0,
-    whiskerwidth: 0.4,
-    quartilemethod: "inclusive",
-    meanline: { visible: true, width: 2, color: "rgba(72, 104, 255, 1)" },
-    boxmean: true,
-  };
+    marker: { color: colors[i] },
+    hovertemplate:
+      "Emoji: %{y}<br>" +
+      "Rating: " + cat + "<br>" +
+      "Percentage: %{x:.1f}%<br>" +
+      "Frequency: %{customdata}<extra></extra>"
+  }));
+
+  const shapes = emojiData.map((d, i) => {
+  const center = (d.sentiment_score + 1) * 50;
+  const ci = d.confidence_interval;
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+  return {
+      type: "rect",
+      xref: "x",
+      yref: "y",
+      x0: clamp(center + ci*50, 0, 100),
+      x1: clamp(center - ci*50, 0, 100),
+      y0: i - 0.4,
+      y1: i + 0.4,
+      fillcolor: "black",
+      opacity: 0.6,
+      line: { width: 0 },
+      layer: "above"
+      };
+  });
 
   const layout = {
-    title: { text: "Emoji Sentiment Boxplot", font: { size: 20 } },
-    margin: { l: 140, r: 20, t: 60, b: 60 },
+    barmode: "stack",
+    barnorm: "percent",
+    title: "Emoji Sentiment Distribution",
+    height: 6000,
+    margin: { l: 250 },
     xaxis: {
-      side: "top",
-      tickmode: "array",
-      tickvals: [1, 2, 3, 4, 5, 6, 7],
-      ticktext: [
-        "1 · Very negative",
-        "2 · Negative",
-        "3 · Somewhat negative",
-        "4 · Neutral",
-        "5 · Somewhat positive",
-        "6 · Positive",
-        "7 · Very positive",
-      ],
-      range: [0.5, 7.5],
+      title: "Percentage",
+      showgrid: false
     },
     yaxis: {
-      categoryorder: "array",
-      categoryarray: categoryOrder,
-      automargin: true,
       autorange: "reversed",
+      automargin: true
     },
-    height: 200 + categoryOrder.length * 28,
-    paper_bgcolor: "#ffffff",
-    plot_bgcolor: "#ffffff",
+    shapes: shapes
   };
 
-  Plotly.newPlot("boxplot-chart", [trace], layout, { responsive: true });
+
+  Plotly.newPlot("boxplot-chart", traces, layout, { responsive: true });
+})
 }
 
 loadData().catch((error) => {
